@@ -1,6 +1,6 @@
 <div align="center">
 
-# dreamDEX Perps — Security & Feedback Report
+# dreamDEX Perps Security & Feedback Report
 
 **Break-it track** · verified bugs with runnable repros · missing order-type features vs top perp DEXs · SDK & API doc gaps
 
