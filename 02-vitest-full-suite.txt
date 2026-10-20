@@ -1,0 +1,16 @@
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/Users/Asik/ZCodeProject/dreamdex-bounty/dreamdex-bot-kit/packages/perp-core[39m
+
+ [32m✓[39m tests/units.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m tests/trading-key.test.ts [2m([22m[2m12 tests[22m[2m)[22m[90m 57[2mms[22m[39m
+[90mstdout[2m | tests/bounty-repro.test.ts[2m > [22m[2mclosePosition (packages/perp-core/src/orders.ts)[2m > [22m[2mF2: sizes the close order from the earlier preview, not the fresh position it just read
+[22m[39mplaced close short 0.00000000000000001 ETH @ 99.8 | filled 0 | order 1
+
+ [32m✓[39m tests/bounty-repro.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1026[2mms[22m[39m
+   [33m[2m✓[22m[39m NonceManager (packages/core/src/nonce.ts)[2m > [22mF1a: acquire() hangs FOREVER after maxInFlight callers that never call settled() [33m1011[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m42 passed[39m[22m[90m (42)[39m
+[2m   Start at [22m 18:56:56
+[2m   Duration [22m 2.01s[2m (transform 176ms, setup 0ms, collect 1.85s, tests 1.09s, environment 0ms, prepare 343ms)[22m
+

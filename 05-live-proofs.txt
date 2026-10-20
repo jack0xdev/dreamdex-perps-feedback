@@ -1,0 +1,28 @@
+
+=== L1  Hideki RPC chain id (docs/perps.md says 50383) ===
+  eth_chainId -> 0xc4cf (decimal 50383)
+
+=== L2  SDK perp reads on live Hideki (SomniaMarkets, no key) ===
+  loadMarkets: 55 markets, 21 perp swaps
+  ETH-PERP pool=0xd6cb1dd58580b84d76068ac21594219ce03aeddf
+  ETH-PERP marginBank=0x478769e1177c0773c43a593dccc4ad15f15f1394
+  fetchOrderBook (floats): bid [2392.06,2.9286] ask [2392.14,0.8117]
+  fetchOrderBook (raw)    : bid 2392060000000000000000 ask 2392140000000000000000
+  getPerpState: mark=2390376563208962000000 fundingRate=100000000000000 window=28800s interval=3600s
+  getPerpHealthSnapshot: priceable=true imf=500bps mm=250bps
+  getMarginAccount(zero): status=Healthy equity=0
+  getMaxPerpOrderSize(zero): placeable=false limitedBy=collateral
+  previewPerpClosePnl(zero): closedQuantity=0 priceable=true
+  listPerpStopOrders(zero): 0 stop(s)
+  getPerpStopOrderSomiPayment: 150000000000000000 wei = 0.15 SOMI per stop (stops.ts dry-run hardcodes "0.30" for a pair)
+
+=== L3  isOperatorAuthorized on the live ETH pool (bot access / link-a-bot) ===
+  isOperatorAuthorized(dummy, dummy, 0x80054449) = false  <- function exists, answers, does not revert
+  isOperatorAuthorized(dummy, dummy, 0xe37b444b) = false  <- function exists, answers, does not revert
+  isOperatorAuthorized(dummy, dummy, 0x364c2587) = false  <- function exists, answers, does not revert
+  isOperatorAuthorized(dummy, dummy, 0xdeadbeef) = false  <- function exists, answers, does not revert
+
+=== L4  REST API market table vs live perp markets ===
+  GET /v0/markets -> 3 markets: SOMI:USDso@50312, WBTC:USDso@50312, WETH:USDso@50312
+  perp rows: 0
+  GET /v0/orderbooks?symbols=ETH:USDso -> HTTP 400 {"status":400,"name":"invalid_param","description":"unknown market symbols: ETH:USDso","context":{"invalid_symbols":["ET

@@ -1,0 +1,31 @@
+
+=== P1  trading-key selectors (packages/perp-core/src/operator.ts:40-44) ===
+  placeOrderFor   keccak("placeOrderFor(address,bool,uint64,uint25...") -> 0x80054449
+  cancelOrderFor  keccak("cancelOrderFor(address,uint128)...") -> 0xe37b444b
+  reduceOrderFor  keccak("reduceOrderFor(address,uint128,uint256)...") -> 0x364c2587
+
+=== P2  float price construction (orders.ts:293 / perp-starter:174 / perp-maker:142 pattern) ===
+  exact raw        : 100000000000100000000000000
+  through float64  : 100000000000099991603380224
+  alignPrice(tick) : 100000000000000000000000000
+  same tick?       : NO — dropped 100000000000000 wei (a full tick)
+  tick-boundary misses scanning 200k consecutive tick multiples near 5e26: 100002
+
+=== P3  repo's own rule (docs/gotchas.md #7 and markets.ts comment) ===
+  docs/gotchas.md #7  : "Fix: quantize in integer space."
+  markets.ts:126-129  : parseUnits(x.toFixed(18), 18) ... is wrong ... four wei off the tick grid
+  orders.ts:293       : price: BigInt(Math.round(touch * 1e18))   <-- float64, not integer space
+  perp-starter:174    : BigInt(Math.round(mark * (1 + TAKE_PROFIT_PCT / 100) * 1e18))
+
+=== P4  NonceManager deadlock, observed live (packages/core/dist/nonce.js:46-66) ===
+  maxInFlight = 2; acquiring 2 nonces and never calling settled() (caller threw):
+  got nonce 5
+  got nonce 6
+  after 3000 ms: third acquire resolved? NO — still spinning in backpressure sleep
+  (waited 3006 ms wall-clock; there is no timeout, error, or recovery path)
+
+=== P5  closePosition sends a 10-unit close for a 4-unit position (orders.ts:234-298) ===
+  captured from the F2 test run (vitest bounty-repro.test.ts):
+  placed close short 0.00000000000000001 ETH @ 99.8 | filled 0 | order 1
+  mocks: previewPerpClosePnl -> closedQuantity 10n; fetchPositions -> contracts 4
+  asserted: trader received quantity 10n, isBid false  =>  6 units flip into a new short
